@@ -1,0 +1,226 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Muscle Moving & Hauling — asphalt + safety-orange palette ── */
+  --color-asphalt: #171a1c;
+  --color-tar: #101214;
+  --color-concrete: #232629;
+  --color-gravel: #2e3236;
+  --color-muscle: #ff5a1f;
+  --color-muscle-bright: #ff7a3d;
+  --color-dock-yellow: #ffc93c;
+  --color-light-bg: #f4f3f1;
+  --color-fog: #b9c0c6;
+  --color-smoke: #8b9298;
+  --color-ink: #181818;
+
+  --font-display: "Archivo Black", "Arial Black", sans-serif;
+  --font-body: "Barlow", "Segoe UI", sans-serif;
+  --font-condensed: "Barlow Condensed", "Segoe UI", sans-serif;
+
+  --animate-marquee: marquee 28s linear infinite;
+  --animate-streak: streak 7s ease-in-out infinite;
+  --animate-streak-late: streak 7s ease-in-out 3.5s infinite;
+  --animate-road-flow: road-flow 14s linear infinite;
+  --animate-glow-drift: glow-drift 22s ease-in-out infinite alternate;
+  --animate-hazard-crawl: hazard-crawl 1.6s linear infinite;
+  --animate-float-slow: float-slow 8s ease-in-out infinite;
+}
+
+:root {
+  /* Nav height, hero top-clearance, and section scroll offsets all derive
+     from this ONE token. Never hardcode a nav height in a component.
+     (See DECISIONS.md — nav/hero coupling rule inherited from Swanson.) */
+  --nav-h: 80px;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* `clip` (not `hidden`) avoids creating a scroll container, so fixed
+     positioning and smooth scroll keep working while mobile can't pan
+     sideways. Same rationale as the HD site. */
+  overflow-x: clip;
+}
+
+body {
+  background: var(--color-asphalt);
+  color: #ffffff;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+main {
+  max-width: 100%;
+}
+
+img,
+video,
+canvas {
+  max-width: 100%;
+}
+
+section {
+  scroll-margin-top: var(--nav-h);
+}
+
+::selection {
+  background: rgba(255, 90, 31, 0.85);
+  color: #fff;
+}
+
+/* ── Display type helpers ── */
+.headline {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.94;
+}
+
+.label-cond {
+  font-family: var(--font-condensed);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+}
+
+/* Hollow "road-marking" numerals/words — painted-stencil feel */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.85);
+}
+.text-outline-orange {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-muscle);
+}
+
+/* ── Hazard stripe — the brand's diagonal DNA ── */
+.hazard {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-muscle) 0 18px,
+    var(--color-tar) 18px 36px
+  );
+}
+.hazard-thin {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-muscle) 0 8px,
+    transparent 8px 16px
+  );
+}
+
+/* ── Dark panel surface ── */
+.panel {
+  background: linear-gradient(165deg, #26292d 0%, #1b1e21 55%, #17191c 100%);
+  border: 1px solid rgba(185, 192, 198, 0.14);
+}
+
+.hairline {
+  border: 1px solid rgba(185, 192, 198, 0.14);
+}
+
+/* ── Noise grain — asphalt grit ── */
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Perspective road/lot floor for the hero backdrop ── */
+.road-floor {
+  background-image:
+    linear-gradient(rgba(255, 122, 61, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 122, 61, 0.14) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: perspective(900px) rotateX(62deg);
+  transform-origin: top center;
+  mask-image: linear-gradient(to bottom, transparent 4%, black 38%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 4%, black 38%, transparent 96%);
+}
+
+/* ── Keyframes ── */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes streak {
+  0%,
+  100% {
+    transform: translateX(-120%) skewX(-18deg);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.9;
+  }
+  60% {
+    transform: translateX(220%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+@keyframes road-flow {
+  from {
+    background-position:
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      0 60px,
+      0 0;
+  }
+}
+
+@keyframes glow-drift {
+  0% {
+    transform: translate3d(-10%, -4%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8%, 6%, 0) scale(1.15);
+  }
+  100% {
+    transform: translate3d(-4%, 10%, 0) scale(0.95);
+  }
+}
+
+@keyframes hazard-crawl {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 51px 0;
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
